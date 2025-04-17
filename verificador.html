@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificación de acceso</title>
+  <script>
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      return parts.length === 2 ? parts.pop().split(';').shift() : null;
+    }
+
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const url = params.get("url");
+      const tienePermiso = getCookie("validador") === "ok";
+
+      if (tienePermiso && url) {
+        window.location.href = decodeURIComponent(url);
+      } else {
+        document.body.innerHTML = `
+          <h2>⛔ Acceso denegado</h2>
+          <p>Este formulario solo puede ser validado desde el dispositivo autorizado.</p>
+        `;
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>Verificando acceso...</p>
+</body>
+</html>
